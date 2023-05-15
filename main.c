@@ -16,6 +16,7 @@ struct team
         int nr_players;
         char *teamName;
         struct player *players;
+        float ma;
         struct team* next;
 
     }; 
@@ -41,6 +42,14 @@ void addAtBeginning(Team** head, Team* newTeam) {
     newTeam->next = *head;
     *head = newTeam;
 }
+Team * findMin(Team *team_head){ //Functia pentru a gasi cel mai mic nod din lista
+Team* minNode=team_head;
+while(team_head!=NULL){
+    if(team_head->ma < minNode->ma) minNode=team_head;
+    team_head=team_head->next;
+}
+return minNode;
+}
 int main(int argc, char *argv[]){
     FILE *f_read, *f_cerinte, *r_out;
     int nr_teams;
@@ -49,7 +58,13 @@ int main(int argc, char *argv[]){
         printf("Eroare la deschiderea fisierului");
         exit(1);
     }
+  r_out = fopen(argv[3],"w");
+  if(r_out==NULL){
+        printf("Eroare la deschiderea fisierului");
+        exit(1);
+    }
     int x=0;
+Team *team_head=NULL; 
 for(int i=1;i<5;i++)
 {fscanf(f_cerinte,"%d",&x);
 if(x==1) if(i==1)
@@ -62,7 +77,7 @@ if(x==1) if(i==1)
     fscanf(f_read,"%d",&nr_teams);//citim nr de echipe
    // printf("%d",nr_teams); //getc(f_read) citeste endline
     getc(f_read);
-    Team *team_head=NULL; 
+    
     for(int i=0;i<nr_teams;i++){
         int nr_juc = 0;
         char nume_echipa[50];
@@ -90,12 +105,6 @@ if(x==1) if(i==1)
         addAtBeginning(&team_head, newTeam);
     }
 
-r_out = fopen(argv[3],"w");
-  if(r_out==NULL){
-        printf("Eroare la deschiderea fisierului");
-        exit(1);
-    }
-
 //fprintf(r_out,"%d\n",nr_teams);
 while(team_head!=NULL){
     //fprintf(r_out,"%d ",team_head->nr_players);
@@ -107,8 +116,29 @@ while(team_head!=NULL){
    // }
     team_head=team_head->next;
 }
-}}
+}
+else if(i==2)
+{ 
+int p=1;
+while(p<nr_teams) p*=2;
+p=p/2;
+fprintf(r_out,"%d",p);
+int count=0;//cate eliminari fac
 
+while(team_head!=NULL){
+    int sum=0;
+    for(int i=0;i<team_head->nr_players;i++){
+         sum+=team_head->players[i].points;
+    }
+    team_head->ma=sum/(team_head->nr_players);
+    team_head=team_head->next;
+}
+while(count<nr_teams-p){ //cate eliminari fac
+ 
+    count++;
+}
+
+}}
 fclose(r_out);
     fclose(f_read);
     return 0;
