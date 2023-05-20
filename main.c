@@ -1,56 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-struct player
-    {
-        char* firstName;
-        char* secondName;
-        int points;
-    };
-typedef struct player Player;
+#include "header.h"
 
 
-struct team
-    {           
-        int nr_players;
-        char *teamName;
-        struct player *players;
-        float ma;
-        struct team* next;
-
-    }; 
-typedef struct team Team;
-   // struct lista
-    //{ struct team* val;
-    //struct lista* next;
-
-    //}
-
-Team* createTeam(int nr_players, char* teamName) {
-
-    Team* newTeam = (Team*)malloc(sizeof(Team));
-    newTeam->nr_players = nr_players;
-    newTeam->teamName=(char*)malloc((strlen(teamName)+1)*sizeof(char));
-    strcpy(newTeam->teamName,teamName);
-    newTeam->players = (Player*)malloc(nr_players * sizeof(Player));
-    newTeam->next = NULL;
-    return newTeam;
-}
-   
-void addAtBeginning(Team** head, Team* newTeam) {
-    newTeam->next = *head;
-    *head = newTeam;
-}
-Team * findMin(Team *team_head){ //Functia pentru a gasi cel mai mic nod din lista
-Team* minNode=(Team*)malloc(sizeof(Team));
-minNode=team_head;
-while(team_head!=NULL){
-    if(team_head->ma < minNode->ma) minNode=team_head;
-    team_head=team_head->next;
-}
-return minNode;
-}
 int main(int argc, char *argv[]){
     FILE *f_read, *f_cerinte, *r_out;
     int nr_teams;
@@ -59,22 +9,21 @@ int main(int argc, char *argv[]){
         printf("Eroare la deschiderea fisierului");
         exit(1);
     }
-  r_out = fopen(argv[3],"w");
-  if(r_out==NULL){
-        printf("Eroare la deschiderea fisierului");
-        exit(1);
-    }
-    int x[5];
-Team *team_head=NULL; 
-for(int i=1;i<=5;i++)
-fscanf(f_cerinte,"%d",&x[i]);
- if(x[1]==1 && x[2]==0)
-{
     f_read = fopen(argv[2],"r");
     if(f_read==NULL){
         printf("Eroare la deschiderea fisierului");
         exit(1);
     }
+  r_out = fopen(argv[3],"w");
+  if(r_out==NULL){
+        printf("Eroare la deschiderea fisierului");
+        exit(1);
+    }
+fprintf(r_out,"buuup");
+int x[5]={0};
+Team *team_head=NULL; 
+for(int i=1;i<=5;i++)
+fscanf(f_cerinte,"%d",&x[i]);
     fscanf(f_read,"%d",&nr_teams);//citim nr de echipe
    // printf("%d",nr_teams); //getc(f_read) citeste endline
     getc(f_read);
@@ -106,32 +55,35 @@ fscanf(f_cerinte,"%d",&x[i]);
         addAtBeginning(&team_head, newTeam);
     }
 
-Team *team_head_aux=(Team*)malloc(sizeof(Team)); 
-team_head_aux=team_head;
+//Team *team_head_aux=(Team*)malloc(sizeof(Team)); 
+//team_head_aux=team_head;
 //fprintf(r_out,"%d\n",nr_teams);
-while(team_head_aux!=NULL){
-    //fprintf(r_out,"%d ",team_head->nr_players);
-    fprintf(r_out,"%s",team_head_aux->teamName);
-   // for(int i=0;i<team_head->nr_players;i++){
+if(x[1]==1 && x[2]==0){
+    afisareLista(team_head, r_out);
+}
+//if(x[1]==1 && x[2]==0){
+//while(team_head_aux!=NULL){
+                 //fprintf(r_out,"%d ",team_head->nr_players);
+//fprintf(r_out,"%s",team_head_aux->teamName);
+           // for(int i=0;i<team_head->nr_players;i++){
    //             fprintf(r_out,"%s ",team_head->players[i].firstName);
     //            fprintf(r_out,"%s ",team_head->players[i].secondName);
     //            fprintf(r_out,"%d\n",team_head->players[i].points);
    // }
-    team_head_aux=team_head_aux->next;
-}
+ //team_head_aux=team_head_aux->next;
+//}}
 //fprintf(r_out,"/n");
-}
-else if(x[1]==1 &&x[2]==1)
-{ 
-int p=1;
-while(p<nr_teams) p*=2;
+
+
+
+int p=1,a=0;
+while(p<nr_teams) {p*=2;a++;}
 p=p/2;
-//fprintf(r_out,"%d",p);
+
 int count=0;//cate eliminari fac
 Team *aux=(Team*)malloc(sizeof(Team));
 
 aux=team_head;
-float x=0;
 while(aux!=NULL){ 
     int sum=0;
     for(int i=0;i<aux->nr_players;i++)
@@ -140,12 +92,11 @@ while(aux!=NULL){
          }
         //fprintf(r_out,"\n");
    // fprintf(r_out,"%d\n",sum);
-    x=((1.0*sum)/(aux->nr_players));
+    float x=((1.0*sum)/(aux->nr_players));
     aux->ma=x;
    // fprintf(r_out,"%.2f\n",x);
     aux=aux->next;
 }
-
    
    Team* prev=(Team*)malloc(sizeof(Team));
 while(count<nr_teams-p){ 
@@ -167,13 +118,71 @@ Team* minNode=findMin(team_head);
 
     count++;}
 
-//void afisareLista(team_head); 
-while(team_head!=NULL){
-fprintf(r_out,"%s",team_head->teamName);
-    team_head=team_head->next;
+if(x[1]==1 && x[2]==1 &&x[3]==0){
+afisareLista(team_head, r_out); 
 }
-//fprintf(r_out,"%d",count); 
-} 
+//while(team_head!=NULL){
+//fprintf(r_out,"%s",team_head->teamName);
+ //   team_head=team_head->next;
+//}
+
+
+if(x[1]==1 && x[2]==1 &&x[3]==1 && x[4]==0){
+//afisareLista(team_head, argv[3]);
+//fprintf(r_out,"MA DUC LA MAMAIaaaaA "); 
+//fprintf(r_out,"%d",a); 
+//fprintf(r_out,"buup");
+afisareLista(team_head, r_out);
+//fprintf(r_out,"buup");
+Queue * q = createQueue();
+    while(team_head->next!=NULL)
+ {enQueue(q,team_head,team_head->next);
+ team_head=team_head->next;
+  team_head=team_head->next; 
+ }
+ fprintf(r_out,"--- ROUND NO:%d",a); 
+//   Stiva* winnersTop=(Stiva*)malloc(sizeof(Stiva));
+//    Stiva*losersTop=(Stiva*)malloc(sizeof(Stiva));
+
+//  while(a){
+// winnersTop=NULL;
+// losersTop=NULL;
+// while (! isEmpty ( q )){
+// Node *node = deQueue(q);
+//     if (node != NULL) {
+//         Team *winningTeam = ( Team *) malloc ( sizeof ( Team ));
+//         winningTeam=node->echipa1;
+//         Team *losingTeam = ( Team *) malloc ( sizeof ( Team ));
+//         losingTeam=node->echipa2;
+
+//         if (winningTeam->ma > losingTeam->ma) {
+//             push(&winnersTop, winningTeam);
+//             push(&losersTop, losingTeam);
+//             winningTeam->ma++; // Adăugăm un punct echipei câștigătoare}
+
+//     } else if (winningTeam->ma == losingTeam->ma) {
+//         push(&winnersTop, winningTeam);
+//         push(&losersTop, losingTeam);
+//         // Nu adăugăm puncte pentru că echipele au același punctaj
+//     }
+//     else{
+
+//         push(&winnersTop, losingTeam); // Adăugăm în stivă echipa invinsă
+//         push(&losersTop, winningTeam); // Adăugăm în stivă echipa câștigătoare
+//         losingTeam->ma++; // Adăugăm un punct echipei câștigătoare
+//         }
+//     }
+// }
+// deleteLosersStack(&losersTop);                  
+// moveToQueue(winnersTop, q);      
+
+// a--;
+// }
+
+
+
+}
+
 
 fclose(r_out);
     fclose(f_read);

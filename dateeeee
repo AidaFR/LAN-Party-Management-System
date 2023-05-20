@@ -1,0 +1,8 @@
+else if(i==2)
+{ long double p=1;
+while(p<nr_teams) p*=2;
+p=p/2;
+printf("%d",p);
+
+
+}

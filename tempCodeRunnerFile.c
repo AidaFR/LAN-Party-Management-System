@@ -1,0 +1,1 @@
+    //addAtBeginningTeam ( &team_head , nr_juc, nume_echipa, players);

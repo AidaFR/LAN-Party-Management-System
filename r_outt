@@ -1,0 +1,37 @@
+
+Team * findMin(Team *team_head){ //Functia pentru a gasi cel mai mic nod din lista
+Team* minNode=team_head;
+while(team_head!=NULL){
+    if(team_head->ma < minNode->ma) minNode=team_head;
+    team_head=team_head->next;
+}
+return minNode;
+}
+
+
+
+
+
+
+
+
+Cei 3 muschetari
+Winner
+Mistretii Atomici
+Elixir Junior
+Black swans
+Legalize
+Pufuletii
+Savage
+Konfetti
+The Skyrynners
+MO si F.O.C.A
+Shooting Stars
+Defending Champs
+The Abusement Park
+Chunky Monkees
+Chafing the Dream
+Ibuprofen and Ben Gay
+The Big Egos
+Vandelay Industries
+The Waiver Wire
