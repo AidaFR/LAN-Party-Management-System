@@ -1,7 +1,7 @@
 #include "header.h"
 
 
-int main(int argc, char *argv[]){
+int main(int argc, char* argv[]){
     FILE *f_read, *f_cerinte, *r_out;
     int nr_teams;
     f_cerinte = fopen(argv[1],"r");
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
         printf("Eroare la deschiderea fisierului");
         exit(1);
     }
-fprintf(r_out,"buuup");
+//fprintf(r_out,"buuup");
 int x[5]={0};
 Team *team_head=NULL; 
 for(int i=1;i<=5;i++)
@@ -34,7 +34,11 @@ fscanf(f_cerinte,"%d",&x[i]);
         fscanf(f_read,"%d",&nr_juc);
         getc(f_read);
         fgets(nume_echipa, 50, f_read);
-        
+        nume_echipa[strlen(nume_echipa)-1]='\0';
+        nume_echipa[strlen(nume_echipa)-1]='\0';
+        if(nume_echipa[strlen(nume_echipa)-1]==' ')
+        nume_echipa[strlen(nume_echipa)-1]='\0';
+//printf("(%c)\n",nume_echipa[strlen(nume_echipa)-1]);
 
 //printf("%d %s",nr_juc,nume_echipa);
         char aux[50];
@@ -76,10 +80,10 @@ if(x[1]==1 && x[2]==0){
 
 
 
-int p=1,a=0;
-while(p<nr_teams) {p*=2;a++;}
+int p=1,a=-1;
+while(p<=nr_teams) {p*=2;a++;}
 p=p/2;
-
+//a--;
 int count=0;//cate eliminari fac
 Team *aux=(Team*)malloc(sizeof(Team));
 
@@ -133,53 +137,57 @@ if(x[1]==1 && x[2]==1 &&x[3]==1 && x[4]==0){
 //fprintf(r_out,"%d",a); 
 //fprintf(r_out,"buup");
 afisareLista(team_head, r_out);
-//fprintf(r_out,"buup");
+fprintf(r_out,"\n");
 Queue * q = createQueue();
-    while(team_head->next!=NULL)
+
+    while(team_head!=NULL)
  {enQueue(q,team_head,team_head->next);
  team_head=team_head->next;
   team_head=team_head->next; 
  }
- fprintf(r_out,"--- ROUND NO:%d",a); 
-//   Stiva* winnersTop=(Stiva*)malloc(sizeof(Stiva));
-//    Stiva*losersTop=(Stiva*)malloc(sizeof(Stiva));
 
-//  while(a){
-// winnersTop=NULL;
-// losersTop=NULL;
-// while (! isEmpty ( q )){
-// Node *node = deQueue(q);
-//     if (node != NULL) {
-//         Team *winningTeam = ( Team *) malloc ( sizeof ( Team ));
-//         winningTeam=node->echipa1;
-//         Team *losingTeam = ( Team *) malloc ( sizeof ( Team ));
-//         losingTeam=node->echipa2;
+  Stiva* winnersTop=(Stiva*)malloc(sizeof(Stiva));
+   Stiva* losersTop=(Stiva*)malloc(sizeof(Stiva));
+int nr=1;
+ while(nr<=a){
+      fprintf(r_out,"--- ROUND NO:%d\n",nr); 
+      displayQueue(q ,r_out);
+winnersTop=NULL;
+losersTop=NULL;
+while (! isEmpty ( q )){
+Node *node = deQueue(q);
+    if (node != NULL) {
+        Team *winningTeam = ( Team *) malloc ( sizeof ( Team ));
+        winningTeam=node->echipa1;
+        Team *losingTeam = ( Team *) malloc ( sizeof ( Team ));
+        losingTeam=node->echipa2;
 
-//         if (winningTeam->ma > losingTeam->ma) {
-//             push(&winnersTop, winningTeam);
-//             push(&losersTop, losingTeam);
-//             winningTeam->ma++; // Adăugăm un punct echipei câștigătoare}
+        if (winningTeam->ma >losingTeam->ma) {
+            push(&winnersTop, winningTeam);
+            push(&losersTop, losingTeam);
+            winningTeam->ma++; // Adăugăm un punct echipei câștigătoare}
+        }
+    // } else if (winningTeam->ma == losingTeam->ma) {
+    //     push(&winnersTop, winningTeam);
+    //     push(&losersTop, losingTeam);
+    //     winningTeam->ma++;
 
-//     } else if (winningTeam->ma == losingTeam->ma) {
-//         push(&winnersTop, winningTeam);
-//         push(&losersTop, losingTeam);
-//         // Nu adăugăm puncte pentru că echipele au același punctaj
-//     }
-//     else{
+    // }
+    else{
 
-//         push(&winnersTop, losingTeam); // Adăugăm în stivă echipa invinsă
-//         push(&losersTop, winningTeam); // Adăugăm în stivă echipa câștigătoare
-//         losingTeam->ma++; // Adăugăm un punct echipei câștigătoare
-//         }
-//     }
-// }
-// deleteLosersStack(&losersTop);                  
-// moveToQueue(winnersTop, q);      
+        push(&winnersTop, losingTeam); // Adăugăm în stivă echipa invinsă
+        push(&losersTop, winningTeam); // Adăugăm în stivă echipa câștigătoare
+        losingTeam->ma++; // Adăugăm un punct echipei câștigătoare
+        }
+    }
+}
+fprintf(r_out,"WINNERS OF ROUND NO:%d\n",nr); 
+afisareStivaCastigatori(winnersTop,r_out);
+deleteLosersStack(&losersTop);                  
+moveToQueue(winnersTop, q);      
 
-// a--;
-// }
-
-
+nr++;
+}
 
 }
 

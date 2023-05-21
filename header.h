@@ -13,8 +13,8 @@ typedef struct player Player;
 struct team
     {           
         int nr_players;
-        char *teamName;
-        Player *players;
+        char* teamName;
+        Player* players;
         float ma;
         struct team* next;
 
@@ -23,12 +23,12 @@ typedef struct team Team;
 Team* createTeam(int nr_players, char* teamName);
 void addAtBeginning(Team** head, Team* newTeam);
 void afisareLista(Team *team_head, FILE* iesire);
-Team * findMin(Team *team_head);
+Team* findMin(Team *team_head);
 
 struct Elem {
 Team* echipa1;
 Team* echipa2;
-struct Elem * next ;
+struct Elem* next ;
 };
 typedef struct Elem Node ;
 
@@ -48,6 +48,8 @@ struct elem * next ;
 };
 typedef struct elem Stiva ;
 
-void push ( Stiva ** top , Team* echipa);
+void push ( Stiva** top , Team* echipa);
 void deleteLosersStack(Stiva** losersTop);    
-void moveToQueue(Stiva *winnersTop, Queue *q);       
+void moveToQueue(Stiva* winnersTop, Queue* q); 
+void displayQueue(Queue* q, FILE* iesire);      
+void afisareStivaCastigatori(Stiva *top, FILE* iesire);

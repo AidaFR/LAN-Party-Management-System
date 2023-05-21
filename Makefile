@@ -1,5 +1,5 @@
 build:
-	gcc -g -o lanParty main.c header.c
+	gcc -o lanParty main.c header.c
 
 run:
 	./lanParty

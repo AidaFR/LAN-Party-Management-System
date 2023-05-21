@@ -17,7 +17,7 @@ void addAtBeginning(Team** head, Team* newTeam) {
 }
 void afisareLista(Team *team_head, FILE* iesire){
     while(team_head!=NULL){ 
-         fprintf(iesire,"%s",team_head->teamName);
+         fprintf(iesire,"%s\n",team_head->teamName);
     team_head=team_head->next;}
 }
 
@@ -40,9 +40,9 @@ return q ;
 
 void enQueue ( Queue *q , Team* team1, Team* team2){
     Node * newNode =( Node *) malloc ( sizeof ( Node ));
-newNode ->echipa1=team1;
-newNode ->echipa2=team2;
-newNode ->next = NULL ;
+newNode->echipa1=team1;
+newNode->echipa2=team2;
+newNode->next = NULL ;
 
 if (q ->rear == NULL ) 
     q ->rear= newNode; 
@@ -100,8 +100,47 @@ while(winnersTop!=NULL ){
     Team* ech1=pop(&winnersTop);
     Team*ech2=pop(&winnersTop);
     enQueue(q,ech1,ech2);
-
 }
+}
+
+void displayQueue(Queue* q, FILE* iesire) {
+    if (isEmpty(q)) {
+        fprintf(iesire,"Coada este goală.\n");
+        return;
+    }
+    
+   Node* temp = q->front;
+    
+    //fprintf(iesire, "Coada: ");
+    while (temp != NULL) {
+        fprintf(iesire,"%s", temp->echipa1->teamName);
+        for (int i = 0; i < (33 - strlen(temp->echipa1->teamName)); i++) {
+            fprintf(iesire," ");
+        }
+        fprintf(iesire, "-");
+        for (int i = 0; i < (33 - strlen(temp->echipa2->teamName)); i++) {
+            fprintf(iesire," ");
+        }
+        fprintf(iesire,"%s", temp->echipa2->teamName);
+        temp = temp->next;
+           fprintf(iesire,"\n");
+    }
+    fprintf(iesire,"\n");
+}
+
+void afisareStivaCastigatori(Stiva *top, FILE* iesire){
+    int ok=0;
+    if(top->next==NULL) ok=1;
+    while(top!=NULL){ 
+         fprintf(iesire,"%s",top->echipa->teamName);
+         for (int i = 0; i < (34 - strlen(top->echipa->teamName)); i++) 
+              fprintf(iesire," ");
+            fprintf(iesire, "-  ");
+         fprintf(iesire,"%.2f\n",top->echipa->ma);
+
+    top=top->next;}
+    if(ok==0) fprintf(iesire, "\n"); 
+    else return;
 }
 
 
