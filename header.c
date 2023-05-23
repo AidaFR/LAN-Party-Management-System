@@ -144,36 +144,71 @@ void afisareStivaCastigatori(Stiva *top, FILE* iesire){
 }
 
 
-//     Node *newNode = NULL;  // Noul nod pentru coadă
-//     Node *lastNode = NULL;  // Ultimul nod din coadă
+// functie pt a crea un nod în bst
+Nod* createNode(Team* echipa) {
+    Nod* newNode = (Nod*)malloc(sizeof(Nod));
+    newNode->Ech = (Team*)malloc(sizeof(Team));
+    newNode->Ech->teamName=(char*)malloc((strlen(echipa->teamName)+1)*sizeof(char));
+    strcpy(newNode->Ech->teamName,echipa->teamName);
+    newNode->Ech->ma = echipa->ma;
+    newNode->left = newNode->right = NULL; 
 
-//     while (count < 2 && !isEmptyStack(s)) {
-//         Team *team = pop(s);  // Extrage o echipă din vârful stivei
-//         Node *tempNode = (Node *)malloc(sizeof(Node));  // Creează un nou nod
+    return newNode;
+}
+// inserez un nod in bst
+Nod* insertNode(Nod* node, Team* team) {
 
-//         tempNode->echipa1 = team;
-//         tempNode->echipa2 = NULL;
-//         tempNode->next = NULL;
+    if (node == NULL) 
+        return createNode(team);
 
-//         if (newNode == NULL) {
-//             newNode = tempNode;
-//             lastNode = tempNode;
-//         } else {
-//             lastNode->echipa2 = tempNode->echipa1;
-//             lastNode->next = tempNode;
-//             lastNode = tempNode;
-//         }
+    if (team->ma < node->Ech->ma) {
+        // inseram in subarborele stang
+        node->left = insertNode(node->left, team);
+    } else if (team->ma > node->Ech->ma) {
+        // inseram in subarborele drept
+        node->right = insertNode(node->right, team);
+    } else {
 
-//         count++;
-//     }
+        int cmpResult = strcmp(team->teamName, node->Ech->teamName);
+        if (cmpResult < 0) 
+            node->left = insertNode(node->left, team);
+           else 
+                node->right= insertNode(node->right, team);
+        
+    }
+//printf("INSERT: %s\n",node->Ech->teamName);
+    return node;
+}
 
-//     if (newNode != NULL) {
-//         if (q->front == NULL) {
-//             q->front = newNode;
-//             q->rear = lastNode;
-//         } else {
-//             q->rear->next = newNode;
-//             q->rear = lastNode;
-//         }
-//     }
-// }
+void mutaStivaInBST(Stiva* winnersTop, Nod **root){
+    if(winnersTop==NULL) return;
+    *root=createNode(winnersTop->echipa);
+    //printf("BST: %s\n", winnersTop->echipa->teamName);
+    winnersTop=winnersTop->next;
+  Team* Echipa = (Team*)malloc(sizeof(Team));
+        while(winnersTop){
+             Echipa=winnersTop->echipa;
+            //printf("BST: %s\n", winnersTop->echipa->teamName);
+        *root = insertNode(*root, Echipa);
+
+       winnersTop=winnersTop->next;
+
+     }
+
+
+}
+void inorderDescresc(Nod* node, FILE *iesire) {
+    if (node == NULL) 
+        return;
+inorderDescresc(node->right,iesire);//parcurgem subarborele drept
+ fprintf(iesire,"%s",node->Ech->teamName);
+
+ for (int i = 0; i < (34 - strlen(node->Ech->teamName)); i++)  
+     fprintf(iesire," ");
+fprintf(iesire, "-  ");
+fprintf(iesire,"%.2f\n",node->Ech->ma);
+
+    // Parcurgem subarborele stâng
+    inorderDescresc(node->left,iesire);
+
+}

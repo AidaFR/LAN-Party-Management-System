@@ -53,3 +53,17 @@ void deleteLosersStack(Stiva** losersTop);
 void moveToQueue(Stiva* winnersTop, Queue* q); 
 void displayQueue(Queue* q, FILE* iesire);      
 void afisareStivaCastigatori(Stiva *top, FILE* iesire);
+
+
+struct el
+    {           
+        Team* Ech;
+        struct el* left;
+        struct el* right;
+
+    }; 
+typedef struct el Nod;
+Nod* createNode(Team* echipa);
+Nod* insertNode(Nod* node, Team* team);
+void mutaStivaInBST(Stiva* winnersTop, Nod **root);
+void inorderDescresc(Nod* node, FILE *iesire);

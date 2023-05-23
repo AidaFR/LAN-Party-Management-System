@@ -1,7 +1,7 @@
 #include "header.h"
 
 
-int main(int argc, char* argv[]){
+int main(int arc, char* argv[]){
     FILE *f_read, *f_cerinte, *r_out;
     int nr_teams;
     f_cerinte = fopen(argv[1],"r");
@@ -84,6 +84,7 @@ int p=1,a=-1;
 while(p<=nr_teams) {p*=2;a++;}
 p=p/2;
 //a--;
+//printf("%d",a);
 int count=0;//cate eliminari fac
 Team *aux=(Team*)malloc(sizeof(Team));
 
@@ -125,13 +126,11 @@ Team* minNode=findMin(team_head);
 if(x[1]==1 && x[2]==1 &&x[3]==0){
 afisareLista(team_head, r_out); 
 }
-//while(team_head!=NULL){
-//fprintf(r_out,"%s",team_head->teamName);
- //   team_head=team_head->next;
-//}
 
+//TASKU 3
+Nod* root=(Nod*)malloc(sizeof(Node)); 
+if(x[1]==1 && x[2]==1 &&x[3]==1 ){
 
-if(x[1]==1 && x[2]==1 &&x[3]==1 && x[4]==0){
 //afisareLista(team_head, argv[3]);
 //fprintf(r_out,"MA DUC LA MAMAIaaaaA "); 
 //fprintf(r_out,"%d",a); 
@@ -139,7 +138,7 @@ if(x[1]==1 && x[2]==1 &&x[3]==1 && x[4]==0){
 afisareLista(team_head, r_out);
 fprintf(r_out,"\n");
 Queue * q = createQueue();
-
+    //printf("bup\n");
     while(team_head!=NULL)
  {enQueue(q,team_head,team_head->next);
  team_head=team_head->next;
@@ -165,14 +164,9 @@ Node *node = deQueue(q);
         if (winningTeam->ma >losingTeam->ma) {
             push(&winnersTop, winningTeam);
             push(&losersTop, losingTeam);
-            winningTeam->ma++; // Adăugăm un punct echipei câștigătoare}
+            winningTeam->ma++; // Adăugăm un punct echipei câștigătoare
         }
-    // } else if (winningTeam->ma == losingTeam->ma) {
-    //     push(&winnersTop, winningTeam);
-    //     push(&losersTop, losingTeam);
-    //     winningTeam->ma++;
-
-    // }
+ 
     else{
 
         push(&winnersTop, losingTeam); // Adăugăm în stivă echipa invinsă
@@ -183,6 +177,16 @@ Node *node = deQueue(q);
 }
 fprintf(r_out,"WINNERS OF ROUND NO:%d\n",nr); 
 afisareStivaCastigatori(winnersTop,r_out);
+//printf("bup\n");     
+  
+  if(nr==a-3 ) {     
+                root=NULL;
+               //printf("bup\n");      
+                mutaStivaInBST(winnersTop,&root);
+                 //printf("bup\n");      
+                
+
+}
 deleteLosersStack(&losersTop);                  
 moveToQueue(winnersTop, q);      
 
@@ -190,6 +194,12 @@ nr++;
 }
 
 }
+
+if(x[4]==1){fprintf(r_out,"\n");
+            fprintf(r_out,"TOP 8 TEAMS:\n"); 
+            inorderDescresc(root, r_out);
+            }
+
 
 
 fclose(r_out);
